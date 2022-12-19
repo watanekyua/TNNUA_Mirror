@@ -72,3 +72,24 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # /Assets/AzureKinectExamples/SDK/Kinect4AzureSDK/Plugins/onnxruntime_providers_cuda.dll
+
+/cudnn_cnn_infer64_8.dll
+/cudnn_ops_infer64_8.dll
+/nvinfer.dll
+/cufft64_10.dll
+/cublasLt64_11.dll
+/onnxruntime_providers_cuda.dll
+/dnn_model_2_0_op11.onnx
+/cublas64_11.dll
+/nvrtc64_112_0.dll
+/nvinfer_plugin.dll
+/ST-Kinect4Azure-000215612312-color-1920-1080.bin
+/onnxruntime.dll
+/directml.dll
+/nvrtc-builtins64_114.dll
+/ST-Kinect4Azure-000215612312-depth-640-576.bin
+/onnxruntime_providers_tensorrt.dll
+/cudart64_110.dll
+/cudnn64_8.dll
+/onnxruntime_providers_shared.dll
+/ST-Kinect4Azure-000375922712-color-1920-1080.bin
