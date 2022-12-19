@@ -1,124 +1,124 @@
-﻿// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
-// using UnityEngine.UI;
-// using com.rfilkov.kinect;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using com.rfilkov.kinect;
 
-// public class BackgroundCatcher : MonoBehaviour
-// {
-//     [Tooltip("Depth sensor index - 0 is the 1st one, 1 - the 2nd one, etc.")]
-//     public int sensorIndex = 0;
+public class BackgroundCatcher : MonoBehaviour
+{
+    [Tooltip("Depth sensor index - 0 is the 1st one, 1 - the 2nd one, etc.")]
+    public int sensorIndex = 0;
 
-//     [Tooltip("RawImage used to display the color camera feed.")]
-//     public UnityEngine.UI.RawImage backgroundImage;
+    [Tooltip("RawImage used to display the color camera feed.")]
+    public UnityEngine.UI.RawImage backgroundImage;
 
-//     [Tooltip("Camera used to display the background image. Set it, if you'd like to allow background image to resize, to match the color image's aspect ratio.")]
-//     public Camera backgroundCamera;
-
-
-//     // last camera rect width & height
-//     private float lastCamRectW = 0;
-//     private float lastCamRectH = 0;
-
-//     // references
-//     private KinectManager kinectManager = null;
-//     private KinectInterop.SensorData sensorData = null;
-//     private Vector2 initialAnchorPos = Vector2.zero;
-
-//     Texture2D SavedTexture;
+    [Tooltip("Camera used to display the background image. Set it, if you'd like to allow background image to resize, to match the color image's aspect ratio.")]
+    public Camera backgroundCamera;
 
 
-//     int noHumanCount = 0;
+    // last camera rect width & height
+    private float lastCamRectW = 0;
+    private float lastCamRectH = 0;
 
-//     void Start()
-//     {
-//         if (backgroundImage == null)
-//         {
-//             backgroundImage = GetComponent<UnityEngine.UI.RawImage>();
-//         }
+    // references
+    private KinectManager kinectManager = null;
+    private KinectInterop.SensorData sensorData = null;
+    private Vector2 initialAnchorPos = Vector2.zero;
 
-//         kinectManager = KinectManager.Instance;
-//         sensorData = kinectManager != null ? kinectManager.GetSensorData(sensorIndex) : null;
-//     }
+    Texture2D SavedTexture;
 
 
-//     void CatchImage()
-//     {
-//         if (kinectManager && kinectManager.IsInitialized())
-//         {
-//             float cameraWidth = backgroundCamera ? backgroundCamera.pixelRect.width : 0f;
-//             float cameraHeight = backgroundCamera ? backgroundCamera.pixelRect.height : 0f;
+    int noHumanCount = 0;
 
-//             Texture imageTex = kinectManager.GetColorImageTex(sensorIndex);
-//             if (backgroundImage && imageTex != null && (backgroundImage.texture == null || 
-//                 backgroundImage.texture.width != imageTex.width || backgroundImage.texture.height != imageTex.height ||
-//                 lastCamRectW != cameraWidth || lastCamRectH != cameraHeight))
-//             {
-//                 lastCamRectW = cameraWidth;
-//                 lastCamRectH = cameraHeight;
+    void Start()
+    {
+        if (backgroundImage == null)
+        {
+            backgroundImage = GetComponent<UnityEngine.UI.RawImage>();
+        }
 
-//                 backgroundImage.texture = imageTex;
-//                 backgroundImage.rectTransform.localScale = sensorData.colorImageScale;  // kinectManager.GetColorImageScale(sensorIndex);
-//                 backgroundImage.color = Color.white;
-//             }
+        kinectManager = KinectManager.Instance;
+        sensorData = kinectManager != null ? kinectManager.GetSensorData(sensorIndex) : null;
+    }
 
-//             if(imageTex != null)
-//             {
-//                 if(SavedTexture != null)
-//                 {
-//                     Destroy(SavedTexture);
-//                 }
-//                 SavedTexture = new Texture2D(imageTex.width, imageTex.height, TextureFormat.BGRA32, false);
-//                 Graphics.CopyTexture(imageTex, SavedTexture);
-//                 SavedTexture.Apply();
 
-//                 backgroundImage.texture = SavedTexture;
-//             }
-//         }
-//     }
+    void CatchImage()
+    {
+        if (kinectManager && kinectManager.IsInitialized())
+        {
+            float cameraWidth = backgroundCamera ? backgroundCamera.pixelRect.width : 0f;
+            float cameraHeight = backgroundCamera ? backgroundCamera.pixelRect.height : 0f;
 
-//     void Update(){
-//         if(Input.GetKeyDown(KeyCode.Insert)){
-//             CatchImage();
-//         }
+            Texture imageTex = kinectManager.GetColorImageTex(sensorIndex);
+            if (backgroundImage && imageTex != null && (backgroundImage.texture == null || 
+                backgroundImage.texture.width != imageTex.width || backgroundImage.texture.height != imageTex.height ||
+                lastCamRectW != cameraWidth || lastCamRectH != cameraHeight))
+            {
+                lastCamRectW = cameraWidth;
+                lastCamRectH = cameraHeight;
 
-//         if (kinectManager && kinectManager.IsInitialized())
-//         {
-//             if (!kinectManager.IsUserDetected(0))
-//             {
-//                 noHumanCount++;
-//             } else {
-//                 noHumanCount = 0;
-//             }
-//         }
+                backgroundImage.texture = imageTex;
+                backgroundImage.rectTransform.localScale = sensorData.colorImageScale;  // kinectManager.GetColorImageScale(sensorIndex);
+                backgroundImage.color = Color.white;
+            }
 
-//         Debug.Log($"No Human {noHumanCount}");
-//     }
+            if(imageTex != null)
+            {
+                if(SavedTexture != null)
+                {
+                    Destroy(SavedTexture);
+                }
+                SavedTexture = new Texture2D(imageTex.width, imageTex.height, TextureFormat.BGRA32, false);
+                Graphics.CopyTexture(imageTex, SavedTexture);
+                SavedTexture.Apply();
 
-//     // public RenderTexture GetBackground(){
+                backgroundImage.texture = SavedTexture;
+            }
+        }
+    }
 
-//     //     if(foregroundTexture)
-//     //     {
-//     //         foregroundTexture.Release();
-//     //         foregroundTexture = null;
-//     //     }
+    void Update(){
+        if(Input.GetKeyDown(KeyCode.Insert)){
+            CatchImage();
+        }
 
-//     //     if (sensorData != null && sensorData.sensorInterface != null && KinectInterop.IsDirectX11Available()){
-//     //         sensorInt = (DepthSensorBase)sensorData.sensorInterface;
+        if (kinectManager && kinectManager.IsInitialized())
+        {
+            if (!kinectManager.IsUserDetected(0))
+            {
+                noHumanCount++;
+            } else {
+                noHumanCount = 0;
+            }
+        }
 
-//     //         // set the texture resolution
-//     //         if (sensorInt.pointCloudColorTexture == null && sensorInt.pointCloudVertexTexture == null)
-//     //         {
-//     //             sensorInt.pointCloudResolution = DepthSensorBase.PointCloudResolution.ColorCameraResolution;
-//     //         }
+        Debug.Log($"No Human {noHumanCount}");
+    }
 
-//     //         textureRes = sensorInt.GetPointCloudTexResolution(sensorData);
+    // public RenderTexture GetBackground(){
 
-//     //         foregroundTexture = KinectInterop.CreateRenderTexture(foregroundTexture, textureRes.x, textureRes.y, RenderTextureFormat.ARGB32);
+    //     if(foregroundTexture)
+    //     {
+    //         foregroundTexture.Release();
+    //         foregroundTexture = null;
+    //     }
 
-//     //         return foregroundTexture;
-//     //     }
+    //     if (sensorData != null && sensorData.sensorInterface != null && KinectInterop.IsDirectX11Available()){
+    //         sensorInt = (DepthSensorBase)sensorData.sensorInterface;
 
-//     //     return null;
-//     // }
-// }
+    //         // set the texture resolution
+    //         if (sensorInt.pointCloudColorTexture == null && sensorInt.pointCloudVertexTexture == null)
+    //         {
+    //             sensorInt.pointCloudResolution = DepthSensorBase.PointCloudResolution.ColorCameraResolution;
+    //         }
+
+    //         textureRes = sensorInt.GetPointCloudTexResolution(sensorData);
+
+    //         foregroundTexture = KinectInterop.CreateRenderTexture(foregroundTexture, textureRes.x, textureRes.y, RenderTextureFormat.ARGB32);
+
+    //         return foregroundTexture;
+    //     }
+
+    //     return null;
+    // }
+}
