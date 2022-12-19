@@ -18,7 +18,7 @@ public class VideoPosCon : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     Vector2 lastPointDown;
     Vector3 lastObjectPosition;
 
-    float ampZ = 0.1f;
+    public float ampZ = 0.05f;
 
     void Start()
     {

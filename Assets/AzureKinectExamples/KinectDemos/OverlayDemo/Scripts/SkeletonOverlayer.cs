@@ -114,6 +114,9 @@ namespace com.rfilkov.components
                             Vector3 posJoint = GetJointPosition(userId, joint);
                             //Debug.Log("U " + userId + " " + (KinectInterop.JointType)joint + " - pos: " + posJoint);
 
+                            if(joint == 0)
+                                Debug.Log($"U POS : {posJoint}");
+                                
                             if (sensorTransform)
                             {
                                 posJoint = sensorTransform.TransformPoint(posJoint);

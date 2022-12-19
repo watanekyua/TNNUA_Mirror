@@ -12,7 +12,8 @@ public class ModelPosCon : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     Vector2 lastPointDown;
     Vector3 lastObjectPosition;
 
-    float ampZ = 0.1f;
+    public float ampZ = 0.05f;
+    
     void Start()
     {
         Vector3 p = SystemConfig.Instance.GetData<Vector3>("ModelPos", new Vector3(0, 0, 0));

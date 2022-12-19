@@ -27,8 +27,10 @@ public class BackgroundCatcher : MonoBehaviour
 
     Texture2D SavedTexture;
 
-
+    public float catchTime = 5;
+    float timeElapse = 0;
     int noHumanCount = 0;
+
 
     void Start()
     {
@@ -86,13 +88,18 @@ public class BackgroundCatcher : MonoBehaviour
         {
             if (!kinectManager.IsUserDetected(0))
             {
-                noHumanCount++;
+                timeElapse += Time.deltaTime;
+
+                if(timeElapse > catchTime){
+                    timeElapse = 0;
+                    CatchImage();
+                    Debug.Log("Catch Image!");
+                }
+
             } else {
-                noHumanCount = 0;
+                timeElapse = 0;
             }
         }
-
-        Debug.Log($"No Human {noHumanCount}");
     }
 
     // public RenderTexture GetBackground(){
